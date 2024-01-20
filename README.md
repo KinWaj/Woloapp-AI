@@ -4,22 +4,23 @@
     AI support for Web Application for Regional Volunteer Centre in Gdańsk, which helps volunteers find and partake in events.
 </div>
 
+## Running the aplication
+Run the app with docker-compose
 
-
-## Getting started
-### Running the aplication
-    # W.I.P.
+    docker-compose up
 
 ### Used Technologies
-    - Python 3.10
-    - Pylint
+- Python 3.10
+- Pylint
+- Docker
 
 ## Contributors
-
-## Development
+- [@MKurshakova](https://github.com/MKurshakova)
+- [@Agata Dobrzyniewicz](https://github.com/ayakiriya)
+- [@Kinga](https://github.com/KinWaj)
+- [@Filiposki54](https://github.com/Filiposki54)
 
 ## Related Repositories
 
-Link to backend repository: Wolo-app
-
-Link to project documentation: Jira Confluence
+- [WoloApp](https://github.com/yarpo/wolo-app/)
+- [WoloApp API](https://github.com/yarpo/wolo-app-api/)
