@@ -37,8 +37,6 @@ def translate_json(json_data):
         return {'error': f'Missing key: {str(key_error)}'}
     except ValueError as value_error:
         return {'error': f'Invalid JSON data: {str(value_error)}'}
-    except Exception as e:
-        return {'error': f'Unexpected error: {str(e)}'}
 
 
 @app.route('/translate', methods=['POST'])
@@ -53,8 +51,6 @@ def translate_json_receiver():
 
     except ValueError as value_error:
         return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
-    except Exception as e:
-        return jsonify({'error': str(e)})
 
 
 if __name__ == '__main__':
