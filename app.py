@@ -1,9 +1,13 @@
+"""Module for AI funtionalities"""
+
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
 
 def translate_json(json_data):
+    """Translates recieved json data with AI and returns modified dictionary.
+     Creates keys for every language separately"""
     try:
         data_dict = dict(json_data)
 
@@ -29,12 +33,15 @@ def translate_json(json_data):
 
         return data_dict
 
+    except KeyError as key_error:
+        return {'error': f'Missing key: {str(key_error)}'}
     except Exception as e:
         return {'error': str(e)}
 
 
 @app.route('/translate', methods=['POST'])
 def translate_json_receiver():
+    """Receives json to translate and gives back translated version (also json)"""
     try:
         received_json = request.json
 
@@ -42,6 +49,8 @@ def translate_json_receiver():
 
         return jsonify(translated_data_dict)
 
+    except ValueError as value_error:
+        return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
     except Exception as e:
         return jsonify({'error': str(e)})
 
