@@ -1,6 +1,10 @@
-"""Module for AI funtionalities"""
+"""Module for AI translations funtionalities"""
 
 from flask import Flask, request, jsonify
+from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
+import torch
+import sentencepiece
+import google.protobuf
 
 app = Flask(__name__)
 
@@ -11,16 +15,30 @@ def translate_json(json_data):
     try:
         data_dict = dict(json_data)
 
-        languages = ['pl', 'eng', 'ru', 'uk']
+        model = MBartForConditionalGeneration.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
+        tokenizer = MBart50TokenizerFast.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
+
+        # TODO - add coding for uk and ru
+        languages = ['pl', 'eng']
+        ai_languages_codes = {
+            'pl': 'pl_PL',
+            'eng': 'en_XX'
+        }
 
         for key in ['title', 'description', 'address_description']:
             for lang in languages:
                 lang_key = f'{key}_{lang}'
                 if data_dict['language'] == lang:
-                    data_dict[lang_key] = f'{data_dict[key]}_original'
+                    data_dict[lang_key] = f'{data_dict[key]}'
                 else:
                     # AI translations goes here
-                    data_dict[lang_key] = f'{data_dict[key]}_{lang}_modified'
+                    tokenizer.src_lang = ai_languages_codes[data_dict['language']]
+                    encoded_lang = tokenizer(data_dict[key], return_tensors="pt")
+                    generated_tokens = model.generate(
+                        **encoded_lang,
+                        forced_bos_token_id=tokenizer.lang_code_to_id[ai_languages_codes[lang]]
+                    )
+                    data_dict[lang_key] = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
         if 'language' in data_dict:
             del data_dict['language']
