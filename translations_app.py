@@ -2,9 +2,6 @@
 
 from flask import Flask, request, jsonify
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
-import torch
-import sentencepiece
-import google.protobuf
 
 app = Flask(__name__)
 
