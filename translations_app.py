@@ -16,15 +16,17 @@ def translate_json(json_data):
         tokenizer = MBart50TokenizerFast.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
 
         # TODO - add coding for uk and ru
-        languages = ['pl', 'eng']
+        languages = ['PL', 'ENG', 'UA', 'RU']
         ai_languages_codes = {
-            'pl': 'pl_PL',
-            'eng': 'en_XX'
+            'PL': 'pl_PL',
+            'ENG': 'en_XX',
+            'UA': 'pl_PL',
+            'RU': 'pl_PL'
         }
 
-        for key in ['title', 'description', 'address_description']:
+        for key in ['title', 'description', 'addressDescription']:
             for lang in languages:
-                lang_key = f'{key}_{lang}'
+                lang_key = f'{key}{lang}'
                 if data_dict['language'] == lang:
                     data_dict[lang_key] = f'{data_dict[key]}'
                 else:
@@ -43,8 +45,8 @@ def translate_json(json_data):
             del data_dict['title']
         if 'description' in data_dict:
             del data_dict['description']
-        if 'address_description' in data_dict:
-            del data_dict['address_description']
+        if 'addressDescription' in data_dict:
+            del data_dict['addressDescription']
 
         return data_dict
 
