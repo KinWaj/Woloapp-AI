@@ -18,7 +18,7 @@ def suggest_category(json_data):
     """Uses woloapp own model to suggest category based on description, return category name and id"""
     data_dict = dict(json_data)
     description = data_dict["description"]
-
+    # pylint: disable=not-callable
     model = SetFitModel.from_pretrained("ayakiri/wolo-app-categories-setfit-model")
     category_suggested = model(description)
 
