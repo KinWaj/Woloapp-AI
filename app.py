@@ -1,3 +1,5 @@
+"""Main app for whole api"""
+
 from flask import Flask, request, jsonify
 from translations_app import TranslationHandler
 from category_suggester_app import SuggestionHandler
@@ -10,6 +12,7 @@ suggestion_handler = SuggestionHandler()
 
 @app.route('/translate', methods=['POST'])
 def translate_json_receiver():
+    """Generate json with translation"""
     try:
         received_json = request.json
         translated_data_dict = translation_handler.translate_json(received_json)
@@ -20,6 +23,7 @@ def translate_json_receiver():
 
 @app.route('/suggest', methods=['POST'])
 def suggest_category_json_receiver():
+    """Suggest category based on description"""
     try:
         received_json = request.json
         suggested_categories_dict = suggestion_handler.suggest_category(received_json)

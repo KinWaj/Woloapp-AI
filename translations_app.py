@@ -3,7 +3,10 @@ from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 
 
 class TranslationHandler:
+    """Handles translations from recieved json with title, description, address description and language"""
+
     def __init__(self):
+        """Init class - create model, tokenizer, define languages and ai languages codes"""
         self.model = MBartForConditionalGeneration.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
         self.tokenizer = MBart50TokenizerFast.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
         self.languages = ['PL', 'ENG', 'UA', 'RU']
@@ -42,14 +45,7 @@ class TranslationHandler:
                         )
                         data_dict[lang_key] = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
-            if 'language' in data_dict:
-                del data_dict['language']
-            if 'title' in data_dict:
-                del data_dict['title']
-            if 'description' in data_dict:
-                del data_dict['description']
-            if 'addressDescription' in data_dict:
-                del data_dict['addressDescription']
+            data_dict = self.delete_unused_fields(data_dict)
 
             return data_dict
 
@@ -57,3 +53,15 @@ class TranslationHandler:
             return {'error': f'Missing key: {str(key_error)}'}
         except ValueError as value_error:
             return {'error': f'Invalid JSON data: {str(value_error)}'}
+
+    def delete_unused_fields(self, data_dict):
+        if 'language' in data_dict:
+            del data_dict['language']
+        if 'title' in data_dict:
+            del data_dict['title']
+        if 'description' in data_dict:
+            del data_dict['description']
+        if 'addressDescription' in data_dict:
+            del data_dict['addressDescription']
+
+        return data_dict

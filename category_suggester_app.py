@@ -3,7 +3,9 @@ from setfit import SetFitModel
 
 
 class SuggestionHandler:
+    """Handles suggesting category based on recieved json with description"""
     def __init__(self):
+        """Init class - create catrgories with ids"""
         self.category_with_ids = {"Kultura": 1,
                                   "Sport": 2,
                                   "Edukacja": 3,
@@ -18,9 +20,12 @@ class SuggestionHandler:
         model = SetFitModel.from_pretrained("ayakiri/wolo-app-categories-setfit-model")
         category_suggested = model(description)
 
-        category_suggested_dict = {
-            "name": category_suggested,
-            "id": self.category_with_ids[category_suggested]
+        return self.reformat_dict(category_suggested)
+
+    def reformat_dict(self, category):
+        category_with_id_dict = {
+            "name": category,
+            "id": self.category_with_ids[category]
         }
 
-        return category_suggested_dict
+        return category_with_id_dict
