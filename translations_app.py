@@ -9,7 +9,7 @@ class TranslationHandler:
         self.model = MBartForConditionalGeneration.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
         self.tokenizer = MBart50TokenizerFast.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
         self.languages = ['PL', 'ENG', 'UA', 'RU']
-        self.ai_languages_codes = {'PL': 'pl_PL', 'ENG': 'en_XX', 'UA': 'ua_UA', 'RU': 'ru_RU'}
+        self.ai_languages_codes = {'PL': 'pl_PL', 'ENG': 'en_XX', 'UA': 'uk_UA', 'RU': 'ru_RU'}
 
     def translate_json(self, json_data):
         """Translates recieved json data with AI and returns modified dictionary.
