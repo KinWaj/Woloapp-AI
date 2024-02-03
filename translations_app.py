@@ -10,7 +10,7 @@ class TranslationHandler:
         self.model = MBartForConditionalGeneration.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
         self.tokenizer = MBart50TokenizerFast.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
         self.languages = ['PL', 'ENG', 'UA', 'RU']
-        self.ai_languages_codes = {'PL': 'pl_PL', 'ENG': 'en_XX', 'UA': 'pl_PL', 'RU': 'pl_PL'}
+        self.ai_languages_codes = {'PL': 'pl_PL', 'ENG': 'en_XX', 'UA': 'uk_UA', 'RU': 'ru_RU'}
 
     def translate_json(self, json_data):
         """Translates recieved json data with AI and returns modified dictionary.
@@ -18,32 +18,20 @@ class TranslationHandler:
         try:
             data_dict = dict(json_data)
 
-            model = MBartForConditionalGeneration.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
-            tokenizer = MBart50TokenizerFast.from_pretrained("facebook/mbart-large-50-many-to-many-mmt")
-
-            # TODO - add coding for uk and ru
-            languages = ['PL', 'ENG', 'UA', 'RU']
-            ai_languages_codes = {
-                'PL': 'pl_PL',
-                'ENG': 'en_XX',
-                'UA': 'pl_PL',
-                'RU': 'pl_PL'
-            }
-
             for key in ['title', 'description', 'addressDescription']:
-                for lang in languages:
+                for lang in self.languages:
                     lang_key = f'{key}{lang}'
                     if data_dict['language'] == lang:
                         data_dict[lang_key] = f'{data_dict[key]}'
                     else:
                         # AI translations goes here
-                        tokenizer.src_lang = ai_languages_codes[data_dict['language']]
-                        encoded_lang = tokenizer(data_dict[key], return_tensors="pt")
-                        generated_tokens = model.generate(
+                        self.tokenizer.src_lang = self.ai_languages_codes[data_dict['language']]
+                        encoded_lang = self.tokenizer(data_dict[key], return_tensors="pt")
+                        generated_tokens = self.model.generate(
                             **encoded_lang,
-                            forced_bos_token_id=tokenizer.lang_code_to_id[ai_languages_codes[lang]]
+                            forced_bos_token_id=self.tokenizer.lang_code_to_id[self.ai_languages_codes[lang]]
                         )
-                        data_dict[lang_key] = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+                        data_dict[lang_key] = self.tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
             data_dict = self.delete_unused_fields(data_dict)
 
