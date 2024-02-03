@@ -23,6 +23,7 @@ class SuggestionHandler:
         return self.reformat_dict(category_suggested)
 
     def reformat_dict(self, category):
+        """Return correct format based on suggested category name"""
         category_with_id_dict = {
             "name": category,
             "id": self.category_with_ids[category]

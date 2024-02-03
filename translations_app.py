@@ -55,6 +55,7 @@ class TranslationHandler:
             return {'error': f'Invalid JSON data: {str(value_error)}'}
 
     def delete_unused_fields(self, data_dict):
+        """Delete unused fields"""
         if 'language' in data_dict:
             del data_dict['language']
         if 'title' in data_dict:
