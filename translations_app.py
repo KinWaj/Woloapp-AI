@@ -1,6 +1,7 @@
 """Module for AI translations funtionalities"""
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 
+
 class TranslationHandler:
     """Handles translations from recieved json with title, description, address description and language"""
 
@@ -17,21 +18,20 @@ class TranslationHandler:
         try:
             data_dict = dict(json_data)
 
-            
             for key in ['title', 'description', 'addressDescription']:
-                for lang in languages:
+                for lang in self.languages:
                     lang_key = f'{key}{lang}'
                     if data_dict['language'] == lang:
                         data_dict[lang_key] = f'{data_dict[key]}'
                     else:
                         # AI translations goes here
-                        tokenizer.src_lang = ai_languages_codes[data_dict['language']]
-                        encoded_lang = tokenizer(data_dict[key], return_tensors="pt")
-                        generated_tokens = model.generate(
+                        self.tokenizer.src_lang = self.ai_languages_codes[data_dict['language']]
+                        encoded_lang = self.tokenizer(data_dict[key], return_tensors="pt")
+                        generated_tokens = self.model.generate(
                             **encoded_lang,
-                            forced_bos_token_id=tokenizer.lang_code_to_id[ai_languages_codes[lang]]
+                            forced_bos_token_id=self.tokenizer.lang_code_to_id[self.ai_languages_codes[lang]]
                         )
-                        data_dict[lang_key] = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+                        data_dict[lang_key] = self.tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
 
             data_dict = self.delete_unused_fields(data_dict)
 
