@@ -1,6 +1,8 @@
 """Module for AI recommender funtionalities"""
+import pandas as pd
 import requests
 from sklearn.neighbors import NearestNeighbors
+from sklearn.preprocessing import MultiLabelBinarizer
 
 
 class RecommendationHandler:
@@ -10,6 +12,7 @@ class RecommendationHandler:
         self.user_events_api_url = 'http://127.0.0.1:8080/users/{}/events'
         self.upcoming_events_api_url = "http://127.0.0.1:8080/events/upcoming"
         self.model = NearestNeighbors(n_neighbors=5, algorithm='auto')
+        self.mlb = MultiLabelBinarizer()
 
     def recommend(self, json_data):
         data_dict = json_data
@@ -19,7 +22,19 @@ class RecommendationHandler:
 
         upcoming_events = list(self.get_upcoming_events())
 
-        #TODO - KNN or other algorithm to return recommended events
+        all_events = user_events + upcoming_events
+
+        events_df = pd.DataFrame(all_events)
+
+        categories_matrix = self.mlb.fit_transform(events_df['categories'])
+        districts_matrix = self.mlb.fit_transform(events_df['district'])
+        organizations_matrix = self.mlb.fit_transform(events_df['organisation'])
+
+        combined_matrix = pd.concat([pd.DataFrame(categories_matrix),
+                                     pd.DataFrame(districts_matrix),
+                                     pd.DataFrame(organizations_matrix)], axis=1)
+
+        self.model.fit(combined_matrix)
 
         return upcoming_events
 
