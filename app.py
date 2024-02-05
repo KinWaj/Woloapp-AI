@@ -1,10 +1,12 @@
 """Main app for whole api"""
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from translations_app import TranslationHandler
 from category_suggester_app import SuggestionHandler
 
 app = Flask(__name__)
+CORS(app)
 
 translation_handler = TranslationHandler()
 suggestion_handler = SuggestionHandler()
