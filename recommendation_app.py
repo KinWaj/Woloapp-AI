@@ -36,6 +36,8 @@ class RecommendationHandler:
 
         self.model.fit(combined_matrix)
 
+        indices = self.model.kneighbors([self.mlb.transform(user_events).sum(axis=0)], return_distance=False)
+
         return upcoming_events
 
     def get_users_events(self, user_id):
