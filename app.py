@@ -7,7 +7,7 @@ from category_suggester_app import SuggestionHandler
 from recommendation_app import RecommendationHandler
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000 http://localhost:8080"}})
 
 translation_handler = TranslationHandler()
 suggestion_handler = SuggestionHandler()
@@ -48,4 +48,4 @@ def recommend_json_receiver():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
