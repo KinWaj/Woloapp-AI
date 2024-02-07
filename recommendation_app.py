@@ -37,13 +37,16 @@ class RecommendationHandler:
         print("ALL")
         print(all_matrix)
 
-        #TODO - use binary matrixes to create model and predict
+        #TODO - use binary matrixes to create model and predict - NOT WORKING
 
-        # self.model.fit(combined_matrix)
-        #
-        # indices = self.model.kneighbors([self.mlb.transform(user_combined_matrix).sum(axis=0)], return_distance=False)
-        #
-        # print(indices)
+        self.mlb.fit(all_matrix)
+        transformed_user_matrix = self.mlb.transform(user_matrix)
+        print(transformed_user_matrix)
+        self.model.fit(all_matrix)
+
+        indices = self.model.kneighbors([self.mlb.transform(transformed_user_matrix).sum(axis=0)], return_distance=False)
+
+        print(indices)
 
         return upcoming_events
 
