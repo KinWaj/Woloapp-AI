@@ -7,7 +7,8 @@ from transformers import pipeline
 
 
 def load_image_from_url(url):
-    response = requests.get(url)
+    """"Loads an image from a URL"""
+    response = requests.get(url)  # pylint: disable=missing-timeout
     img = Image.open(BytesIO(response.content))
     return img
 
@@ -45,6 +46,7 @@ class EventCreationHandler:
             return {'error': f'Invalid JSON data: {str(value_error)}'}
 
     def translate_field(self, field, dictionary):
+        """Translates recieved field"""
         for lang in self.languages:
             lang_key = f'{field}{lang}'
             if dictionary['language'] == lang:
@@ -65,6 +67,7 @@ class EventCreationHandler:
         return dictionary
 
     def generate_alt(self, url):
+        """Generates an Alt text for an image"""
         img = load_image_from_url(url)
 
         result = self.visual_pipe(img)
