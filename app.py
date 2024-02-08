@@ -2,23 +2,23 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from translations_app import TranslationHandler
+from event_creation_app import EventCreationHandler
 from category_suggester_app import SuggestionHandler
 
 app = Flask(__name__)
 CORS(app)
 
-translation_handler = TranslationHandler()
+event_creation_handler = EventCreationHandler()
 suggestion_handler = SuggestionHandler()
 
 
-@app.route('/translate', methods=['POST'])
-def translate_json_receiver():
-    """Generate json with translation"""
+@app.route('/event-create', methods=['POST'])
+def event_json_receiver():
+    """Generate json with translation and alt generation"""
     try:
         received_json = request.json
-        translated_data_dict = translation_handler.translate_json(received_json)
-        return jsonify(translated_data_dict)
+        event_data_dict = event_creation_handler.translate_json(received_json)
+        return jsonify(event_data_dict)
     except ValueError as value_error:
         return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
 
