@@ -1,5 +1,6 @@
 """Module for AI category suggester functionalities"""
 import requests
+from requests import RequestException
 from setfit import SetFitModel
 
 
@@ -62,3 +63,5 @@ class SuggestionHandler:
 
         if response.status_code == 200:
             return response.json()
+        else:
+            raise RequestException(f'API 1 request failed with status code {response.status_code}')
