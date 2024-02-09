@@ -63,5 +63,5 @@ class SuggestionHandler:
 
         if response.status_code == 200:
             return response.json()
-        else:
-            raise RequestException(f'API 1 request failed with status code {response.status_code}')
+
+        return RequestException(f'API 1 request failed with status code {response.status_code}')
