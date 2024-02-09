@@ -5,3 +5,5 @@ sentencepiece~=0.1.99
 setfit~=1.0.3
 protobuf
 flask-cors
+requests~=2.31.0
+pillow~=10.2.0
