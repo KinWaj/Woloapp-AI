@@ -4,17 +4,37 @@
     AI support for Web Application for Regional Volunteer Centre in Gdańsk, which helps volunteers find and partake in events.
 </div>
 
-## Running the aplication
-Run the app with docker-compose
+## ⚙️ Running the aplication
 
-    docker-compose up
+### Run application with Flask
+From the Woloapp-AI directory run:
 
-### Used Technologies
-- Python 3.10
-- Pylint
-- Docker
+    python -m flask --app ./app.py run
 
-## Contributors
+## 🤖 Used Models
+- [ayakiri/wolo-app-categories-setfit-model](https://huggingface.co/ayakiri/wolo-app-categories-setfit-model)
+- [facebook/mbart-large-50-many-to-many-mmt](https://huggingface.co/facebook/mbart-large-50-many-to-many-mmt)
+- [microsoft/git-base-coco](https://huggingface.co/microsoft/git-base-coco)
+
+<details>
+<summary><h2>🧰 Used Technologies</h2></summary>
+<ul>
+<li>Python
+<li>Pylint
+<li>Flask
+<li>Transformers
+<li>PyTorch
+<li>Sentencepiece
+<li>Setfit
+<li>Protobuf
+<li>Flask-CORS
+<li>Requests
+<li>Pillow
+</ul>
+</details>
+
+
+## 👋 Contributors
 - [@MKurshakova](https://github.com/MKurshakova)
 - [@Agata Dobrzyniewicz](https://github.com/ayakiriya)
 - [@Kinga](https://github.com/KinWaj)
