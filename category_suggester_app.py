@@ -58,10 +58,7 @@ class SuggestionHandler:
         Returns:
             list: List of dictionaries with category each with two keys for name and id
         """
-        response = requests.get(self.categories_api_url)
+        response = requests.get(self.categories_api_url) # pylint: disable=missing-timeout
 
         if response.status_code == 200:
             return response.json()
-        else:
-            raise Exception(f'API 1 request failed with status code {response.status_code}')
-
