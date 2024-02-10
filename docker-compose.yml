@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  woloappai:
-    image: woloapp-ai
-    build:
-      context: .
-      dockerfile: ./Dockerfile

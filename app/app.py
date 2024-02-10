@@ -2,9 +2,9 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from inappropriate_event_exception import InappropriateEventException
-from event_creation_app import EventCreationHandler
-from category_suggester_app import SuggestionHandler
+from app.exceptions.inappropriate_event_exception import InappropriateEventException
+from app.handlers.event_creation_app import EventCreationHandler
+from app.handlers.category_suggester_app import SuggestionHandler
 
 app = Flask(__name__)
 CORS(app)
