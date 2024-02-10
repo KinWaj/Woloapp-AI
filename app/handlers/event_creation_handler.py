@@ -4,7 +4,7 @@ from io import BytesIO
 import requests
 from PIL import Image
 from transformers import pipeline
-from app.exceptions.inappropriate_event_exception import InappropriateEventException
+from exceptions.inappropriate_event_exception import InappropriateEventException
 
 
 def load_image_from_url(url):
