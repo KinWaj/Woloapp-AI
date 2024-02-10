@@ -7,14 +7,18 @@
 ## ⚙️ Running the aplication
 
 ### Run application with Flask
+>[!NOTE] 
+>To start the application, make sure to run [WoloApp API](https://github.com/yarpo/wolo-app-api) first.
+
 From the Woloapp-AI directory run:
 
-    python -m flask --app ./app.py run
+    python -m flask --app ./app/app.py run
 
 ## 🤖 Used Models
 - [ayakiri/wolo-app-categories-setfit-model](https://huggingface.co/ayakiri/wolo-app-categories-setfit-model)
 - [facebook/mbart-large-50-many-to-many-mmt](https://huggingface.co/facebook/mbart-large-50-many-to-many-mmt)
 - [microsoft/git-base-coco](https://huggingface.co/microsoft/git-base-coco)
+- [IMSyPP/hate_speech_en](https://huggingface.co/IMSyPP/hate_speech_en)
 
 <details>
 <summary><h2>🧰 Used Technologies</h2></summary>
@@ -41,6 +45,5 @@ From the Woloapp-AI directory run:
 - [@Filiposki54](https://github.com/Filiposki54)
 
 ## Related Repositories
-
 - [WoloApp](https://github.com/yarpo/wolo-app/)
 - [WoloApp API](https://github.com/yarpo/wolo-app-api/)
