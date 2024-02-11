@@ -29,15 +29,17 @@ class EventCreationHandler:
 
     Methods:
         process_event_creation(json_data): Coordinates whole event creation processing
+        translate_field(field, dictionary): Translates received field to desired languages
+        generate_alt(url): Generates an Alt text for an image
+        hate_speech_detection(description): Classifies description into one of four classes and provides probability
     """
-
-    # TODO - describe all methods
 
     def __init__(self):
         """Init class - create model, tokenizer, define languages and ai languages codes"""
         self.translation_pipe = pipeline("translation", model="facebook/mbart-large-50-many-to-many-mmt")
         self.languages = ['PL', 'EN', 'UA', 'RU']
         self.ai_languages_codes = {'PL': 'pl_PL', 'EN': 'en_XX', 'UA': 'uk_UA', 'RU': 'ru_RU'}
+        self.fields_to_translate = ['name', 'description', 'addressDescription']
 
         self.visual_pipe = pipeline("image-to-text", model="microsoft/git-base-coco")
 
@@ -64,7 +66,7 @@ class EventCreationHandler:
             data_dict = dict(json_data)
 
             # fields translations
-            for key in ['name', 'description', 'addressDescription']:
+            for key in self.fields_to_translate:
                 data_dict = self.translate_field(key, data_dict)
 
             # hate speech detection
