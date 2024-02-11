@@ -2,6 +2,11 @@
      <img src="img/logo.svg">
     <h1> Woloapp-AI </h1 >
     AI support for Web Application for Regional Volunteer Centre in Gdańsk, which helps volunteers find and partake in events.
+     <br>Key functionalities include:
+     <br>Category suggestion for event creation
+     <br>Translation of event titles, descriptions, and address details
+     <br>Hate speech detection during event creation
+     <br>Generation of alternative text for images in event creation
 </div>
 
 ## ⚙️ Running the aplication
