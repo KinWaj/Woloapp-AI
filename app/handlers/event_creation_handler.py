@@ -4,7 +4,6 @@ from io import BytesIO
 import requests
 from PIL import Image
 from transformers import pipeline
-from exceptions.inappropriate_event_exception import InappropriateEventException
 
 
 def load_image_from_url(url):
@@ -24,14 +23,12 @@ class EventCreationHandler:
     Handles processing of event creation using different AI models.
     Translations - huggingface: facebook/mbart-large-50-many-to-many-mmt
     Alt text generator - huggingface: microsoft/git-base-coco
-    Hate speech detection - huggingface: IMSyPP/hate_speech_en
 
 
     Methods:
         process_event_creation(json_data): Coordinates whole event creation processing
         translate_field(field, dictionary): Translates received field to desired languages
         generate_alt(url): Generates an Alt text for an image
-        hate_speech_detection(description): Classifies description into one of four classes and provides probability
     """
 
     def __init__(self):
@@ -39,41 +36,34 @@ class EventCreationHandler:
         self.translation_pipe = pipeline("translation", model="facebook/mbart-large-50-many-to-many-mmt")
         self.languages = ['PL', 'EN', 'UA', 'RU']
         self.ai_languages_codes = {'PL': 'pl_PL', 'EN': 'en_XX', 'UA': 'uk_UA', 'RU': 'ru_RU'}
-        self.fields_to_translate = ['name', 'description', 'addressDescription']
+        self.fields_to_translate = ['name', 'description', 'shiftDirections']
 
         self.visual_pipe = pipeline("image-to-text", model="microsoft/git-base-coco")
-
-        self.hate_speech_pipeline = pipeline("text-classification", model="IMSyPP/hate_speech_en")
-        self.inappropriate_labels = ["LABEL_1", "LABEL_2", "LABEL_3"]
 
     def process_event_creation(self, json_data):
         """
         Coordinates whole event creation processing
 
         Args:
-            json_data (json): Json data with any fields - required: name, description, addressDescription
+            json_data (json): Json data with any fields - required: name, description, shiftDirections
 
         Returns:
             dict: Dictionary with the same fields that were received and more:
                 - name -> namePL, nameEN, nameRU, nameUA;
                 - description -> descriptionPL, descriptionEN, descriptionRU, descriptionUA;
-                - addressDescription -> addressDescriptionPL, addressDescriptionEND, addressDescriptionRU,
+                - for every record in shiftDirections -> addressDescriptionPL, addressDescriptionEND, addressDescriptionRU,
                                         addressDescriptionUA;
                 - generates alt if imageURL provided
-                - returns different json with error and error code if description ris inappropriate
         """
         try:
             data_dict = dict(json_data)
 
             # fields translations
             for key in self.fields_to_translate:
-                data_dict = self.translate_field(key, data_dict)
-
-            # hate speech detection
-            is_inappropriate = self.hate_speech_pipeline(data_dict["descriptionEN"])
-
-            if is_inappropriate[0]['label'] in self.inappropriate_labels:
-                raise InappropriateEventException()
+                if key == 'shiftDirections':
+                    data_dict = self.translate_array('shiftDirections', data_dict)
+                else:
+                    data_dict = self.translate_field(key, data_dict)
 
             # unused field deletion
             if 'language' in data_dict:
@@ -83,12 +73,44 @@ class EventCreationHandler:
             if data_dict["imageUrl"] != "":
                 data_dict["alt"] = self.generate_alt(data_dict["imageUrl"])
 
+            if 'imageUrl' in data_dict:
+                del data_dict['imageUrl']
+
             return data_dict
 
         except KeyError as key_error:
             return {'error': f'Missing key: {str(key_error)}'}
         except ValueError as value_error:
             return {'error': f'Invalid JSON data: {str(value_error)}'}
+
+    def translate_array(self, array_name, dictionary):
+        data = dictionary[array_name]
+        shift_translations = []
+
+        for direction in data:
+            single_shift_translation = {}
+            for lang in self.languages:
+                field_key = f'addressDescription{lang}'
+                if dictionary['language'] == lang:
+                    single_shift_translation[field_key] = direction
+                else:
+                    if direction != "":
+                        translation_result = self.translation_pipe(direction,
+                                                                   src_lang=self.ai_languages_codes[
+                                                                       dictionary['language']],
+                                                                   tgt_lang=self.ai_languages_codes[lang])
+                        single_shift_translation[field_key] = translation_result[0]['translation_text']
+                    else:
+                        single_shift_translation[field_key] = ""
+
+            shift_translations.append(single_shift_translation)
+
+        dictionary['shiftTranslations'] = shift_translations
+
+        if array_name in dictionary:
+            del dictionary[array_name]
+
+        return dictionary
 
     def translate_field(self, field, dictionary):
         """
@@ -136,21 +158,3 @@ class EventCreationHandler:
 
         return result[0]["generated_text"]
 
-    def hate_speech_detection(self, description):
-        """
-        Classifies description into one of four classes:
-        LABEL_0 - acceptable
-        LABEL_0 - inappropriate
-        LABEL_0 - offensive
-        LABEL_0 - violent
-        And provides probability
-
-        Args:
-            description (str): Description to analyze
-
-        Returns:
-            list: List with dictionary with label and probability
-        """
-        result = self.hate_speech_pipeline(description)
-
-        return result
