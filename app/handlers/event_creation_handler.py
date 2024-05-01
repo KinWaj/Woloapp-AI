@@ -169,4 +169,3 @@ class EventCreationHandler:
         result = self.visual_pipe(img)
 
         return result[0]["generated_text"]
-
