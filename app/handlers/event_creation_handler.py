@@ -51,8 +51,10 @@ class EventCreationHandler:
             dict: Dictionary with the same fields that were received and more:
                 - name -> namePL, nameEN, nameRU, nameUA;
                 - description -> descriptionPL, descriptionEN, descriptionRU, descriptionUA;
-                - for every record in shiftDirections -> addressDescriptionPL, addressDescriptionEND, addressDescriptionRU,
-                                        addressDescriptionUA;
+                - for every record in shiftDirections -> addressDescriptionPL,
+                                                        addressDescriptionEND,
+                                                        addressDescriptionRU,
+                                                        addressDescriptionUA;
                 - generates alt if imageURL provided
         """
         try:
@@ -84,6 +86,16 @@ class EventCreationHandler:
             return {'error': f'Invalid JSON data: {str(value_error)}'}
 
     def translate_array(self, array_name, dictionary):
+        """
+        Translates received array to desired languages
+
+        Args:
+            array_name (str): Sets which array we would like to translate, by its name
+            dictionary (dict): Dictionary that will have a field translated
+
+        Returns:
+            dict: The same dictionary but with set array field deleted and generated fields with translated data
+        """
         data = dictionary[array_name]
         shift_translations = []
 
