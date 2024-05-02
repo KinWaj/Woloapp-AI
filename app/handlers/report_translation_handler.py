@@ -15,7 +15,7 @@ class ReportTranslationHandler:
     def __init__(self):
         """Init class - define field(s) to translate and initiate Translation Tool Util"""
         self.fields_to_translate = ['report']
-        self.translation_tool = TranslationTool(self.fields_to_translate)
+        self.translation_tool = TranslationTool()
 
     def process_report_translation(self, json_data):
         """Coordinates report translation
