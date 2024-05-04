@@ -12,7 +12,7 @@ event_creation_handler = EventCreationHandler()
 report_translation_handler = ReportTranslationHandler()
 
 
-@app.route('/event/create', methods=['POST'])
+@app.route('/event-create', methods=['POST'])
 def event_creation_json_receiver():
     """
     Receiver for creating event. Responsible for translating fields, generating alt text for images.
