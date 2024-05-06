@@ -4,12 +4,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from handlers.event_creation_handler import EventCreationHandler
 from handlers.report_translation_handler import ReportTranslationHandler
+from handlers.organisation_creation_handler import OrganisationCreationHandler
 
 app = Flask(__name__)
 CORS(app)
 
 event_creation_handler = EventCreationHandler()
 report_translation_handler = ReportTranslationHandler()
+organisation_creation_handler = OrganisationCreationHandler()
 
 
 @app.route('/event-create', methods=['POST'])
@@ -49,6 +51,19 @@ def report_json_receiver():
         received_json = request.json
         report_dict = report_translation_handler.process_report_translation(received_json)
         return jsonify(report_dict)
+    except ValueError as value_error:
+        return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
+
+
+@app.route('/organisation/translate', methods=['POST'])
+def organisation_json_receiver():
+    """
+    Receiver for translating an organisation. Responsible for translating organisation description text from received json.
+    """
+    try:
+        received_json = request.json
+        organisation_json = organisation_creation_handler.process_organisation_creation(received_json)
+        return jsonify(organisation_json)
     except ValueError as value_error:
         return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
 
