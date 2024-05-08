@@ -9,7 +9,9 @@ class TranslationHandler:
 
 
     Methods:
-        process_field_translation(json_data): Coordinates translation for a list of fields using TranslationTool Util
+        process_field_translation(json_data): Coordinates translation for a list of fields
+        process_array_translation(json_data): Coordinates translation for a list of fields with array data
+        language_delete(dict): Returns the same dictionary wiith no language field
     """
 
     def __init__(self, fields_to_translate, arrays_to_translate=None):

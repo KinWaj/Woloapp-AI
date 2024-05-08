@@ -4,6 +4,11 @@ from transformers import pipeline
 
 
 class TranslationTool:
+    """
+    Tool for translating data with AI.
+
+
+    """
     def __init__(self):
         self.translation_pipe = pipeline("translation", model="facebook/mbart-large-50-many-to-many-mmt")
         self.languages = ['PL', 'EN', 'UA', 'RU']
