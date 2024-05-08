@@ -54,6 +54,7 @@ class TranslationTool:
         shift_translations = []
 
         for direction in data:
+            print("Direction: ", direction)
             single_shift_translation = {}
             for lang in self.languages:
                 field_key = f'addressDescription{lang}'
