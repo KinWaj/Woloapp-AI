@@ -76,6 +76,27 @@ def organisation_json_receiver():
     except ValueError as value_error:
         return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
 
+@app.route('/faq/translate', methods=['POST'])
+def faq_json_receiver():
+    """
+    Receiver for translating an FAQ.
+    json: Json data with the same fields that were received and more:
+        - question -> questionPL, questionEN, questionRU, questionUA;
+        - answer -> answerPL, answerEN, answerRU, answerUA;
+    method: POST
+
+    Raises:
+        ValueError: Not correct JSON data
+    """
+    try:
+        received_json = request.json
+        handler = TranslationHandler(fields_to_translate=['question', 'answer'])
+        faq_json = handler.process_field_translation(received_json)
+        faq_json = handler.language_delete(faq_json)
+        return jsonify(faq_json)
+    except ValueError as value_error:
+        return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
