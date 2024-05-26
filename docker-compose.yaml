@@ -1,0 +1,10 @@
+version: '1'
+
+services:
+  translations:
+    container_name: wolo-app-ai
+    build:
+      context: .
+      dockerfile: Dockerfile_AI
+    ports:
+      - '5000:5000'
