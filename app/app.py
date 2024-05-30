@@ -1,8 +1,15 @@
 """Main app for whole api with endpoints"""
+import warnings
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from handlers.translation_handler import TranslationHandler
+
+warnings.filterwarnings(
+    "ignore",
+    category=FutureWarning,
+    message="`resume_download` is deprecated and will be removed in version 1.0.0"
+)
 
 app = Flask(__name__)
 CORS(app)
@@ -78,4 +85,4 @@ def organisation_json_receiver():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True,port='5000')
