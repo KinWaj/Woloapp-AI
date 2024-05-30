@@ -10,9 +10,9 @@ class TranslationTool:
 
     """
     def __init__(self):
-        self.translation_pipe = pipeline("translation", model="facebook/mbart-large-50-many-to-many-mmt")
+        self.translation_pipe = pipeline("translation", model="facebook/m2m100_418M")
         self.languages = ['PL', 'EN', 'UA', 'RU']
-        self.ai_languages_codes = {'PL': 'pl_PL', 'EN': 'en_XX', 'UA': 'uk_UA', 'RU': 'ru_RU'}
+        self.ai_languages_codes = {'PL': 'pl', 'EN': 'en', 'UA': 'uk', 'RU': 'ru'}
 
     def translate_field(self, field, dictionary):
         """
