@@ -19,7 +19,6 @@ class TranslationHandler:
         self.fields_to_translate = fields_to_translate
         self.arrays_to_translate = arrays_to_translate
         self.translation_tool = TranslationTool()
-        print(self.arrays_to_translate)
 
     def process_field_translation(self, json_data):
         """
@@ -58,10 +57,8 @@ class TranslationHandler:
         """
         try:
             data_dict = dict(json_data)
-            print(data_dict['shiftDirections'])
 
             for key in self.arrays_to_translate:
-                print("key:", key)
                 data_dict = self.translation_tool.translate_array(array_name=key, dictionary=data_dict)
 
             return data_dict
