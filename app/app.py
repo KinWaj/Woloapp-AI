@@ -36,6 +36,7 @@ def event_creation_json_receiver():
         handler = TranslationHandler(fields_to_translate=['name', 'description'],
                                      arrays_to_translate=['shiftDirections'])
         event_data_dict = handler.process_field_translation(received_json)
+        event_data_dict = handler.add_info_about_ai(event_data_dict, 'description')
         event_data_dict = handler.process_array_translation(event_data_dict)
         event_data_dict = handler.language_delete(event_data_dict)
 
@@ -58,6 +59,7 @@ def report_json_receiver():
         received_json = request.json
         handler = TranslationHandler(fields_to_translate=['report'])
         report_dict = handler.process_field_translation(received_json)
+        report_dict = handler.add_info_about_ai(report_dict, 'report')
         report_dict = handler.language_delete(report_dict)
         return jsonify(report_dict)
     except ValueError as value_error:
@@ -78,6 +80,7 @@ def organisation_json_receiver():
         received_json = request.json
         handler = TranslationHandler(fields_to_translate=['description'])
         organisation_json = handler.process_field_translation(received_json)
+        organisation_json = handler.add_info_about_ai(organisation_json, 'description')
         organisation_json = handler.language_delete(organisation_json)
         return jsonify(organisation_json)
     except ValueError as value_error:
@@ -99,6 +102,7 @@ def faq_json_receiver():
         received_json = request.json
         handler = TranslationHandler(fields_to_translate=['question', 'answer'])
         faq_json = handler.process_field_translation(received_json)
+        faq_json = handler.add_info_about_ai(faq_json, 'answer')
         faq_json = handler.language_delete(faq_json)
         return jsonify(faq_json)
     except ValueError as value_error:

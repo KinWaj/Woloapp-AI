@@ -82,3 +82,11 @@ class TranslationHandler:
             del dictionary['language']
 
         return dictionary
+
+    def add_info_about_ai(self, json_data, field):
+        for lang in self.translation_tool.languages:
+            lang_key = f'{field}{lang}'
+            if json_data['language'] != lang:
+                json_data[lang_key] += " " + self.translation_tool.ai_generated_text[lang]
+                print(f"Added AI text to {lang_key}: {json_data[lang_key]}")
+        return json_data
