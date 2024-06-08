@@ -90,7 +90,7 @@ class TranslationHandler:
         Args:
             json_data (dict): The JSON data where the AI text should be added.
             field (str): The field where the AI text should be added.
-git add
+
         Returns:
             dict: The JSON data with the AI text added to the specified field.
         """
