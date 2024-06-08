@@ -13,6 +13,13 @@ class TranslationTool:
         self.translation_pipe = pipeline("translation", model="facebook/m2m100_418M")
         self.languages = ['PL', 'EN', 'UA', 'RU']
         self.ai_languages_codes = {'PL': 'pl', 'EN': 'en', 'UA': 'uk', 'RU': 'ru'}
+        self.ai_generated_text = {
+            'PL': "[Ten tekst jest przetłumaczony przez AI]",
+            'EN': "[This text has been translated by AI]",
+            'UA': "[Цей текст був перекладений за допомогою AI]",
+            'RU': "[Этот текст был переведён при помощи ИИ]"
+        }
+
 
     def translate_field(self, field, dictionary):
         """
