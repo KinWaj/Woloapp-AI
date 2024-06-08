@@ -84,6 +84,16 @@ class TranslationHandler:
         return dictionary
 
     def add_info_about_ai(self, json_data, field):
+        """
+         Adds AI generated text to a specified field in the provided JSON data.
+
+        Args:
+            json_data (dict): The JSON data where the AI text should be added.
+            field (str): The field where the AI text should be added.
+
+        Returns:
+            dict: The JSON data with the AI text added to the specified field.
+        """
         for lang in self.translation_tool.languages:
             lang_key = f'{field}{lang}'
             if json_data['language'] != lang:
