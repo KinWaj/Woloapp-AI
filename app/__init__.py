@@ -13,6 +13,7 @@ warnings.filterwarnings(
 
 
 def create_app():
+    """Initialize app"""
     flask_app = Flask(__name__)
     CORS(flask_app)
 
