@@ -1,9 +1,12 @@
+"""Module for unit tests"""
 import unittest
 from app import app
 
 
 class WoloAppTestCase(unittest.TestCase):
+    """Testing class for whole application"""
     def setUp(self):
+        """Set up the test environment"""
         self.app = app
         self.app.config['TESTING'] = True
         self.client = self.app.test_client()
@@ -11,10 +14,12 @@ class WoloAppTestCase(unittest.TestCase):
         self.app_context.push()
 
     def tearDown(self):
+        """Tear down the test environment"""
         self.app_context.pop()
 
     # event create test
     def test_event_creation_success(self):
+        """Test event creation with valid input"""
         sample_input = {
             "language": "EN",
             "name": "Sample Event",
@@ -31,6 +36,7 @@ class WoloAppTestCase(unittest.TestCase):
         self.assertIn('addressDescriptionPL', response_data['shiftTranslations'][0])
 
     def test_event_creation_invalid_json(self):
+        """Test event creation with invalid JSON input"""
         invalid_input = {
             "invalidField": "Invalid data"
         }
@@ -40,13 +46,10 @@ class WoloAppTestCase(unittest.TestCase):
         self.assertIn('error', response_data)
         self.assertTrue(response_data['error'].startswith('Missing key'))
 
-        # report tests
-
-        # organisation tests
-
-        # faq tests
+    # report tests
+    # organisation tests
+    # faq tests
 
 
 if __name__ == '__main__':
     unittest.main()
-

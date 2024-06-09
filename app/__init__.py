@@ -1,4 +1,4 @@
-"""Main app for whole api with endpoints"""
+"""Main app for whole api with endpoints init"""
 import warnings
 
 from flask import Flask, request, jsonify
@@ -13,10 +13,10 @@ warnings.filterwarnings(
 
 
 def create_app():
-    app = Flask(__name__)
-    CORS(app)
+    flask_app = Flask(__name__)
+    CORS(flask_app)
 
-    @app.route('/event-create', methods=['POST'])
+    @flask_app.route('/event-create', methods=['POST'])
     def event_creation_json_receiver():
         """
         Receiver for creating event. Responsible for translating fields of event including single fields and arrays.
@@ -43,7 +43,7 @@ def create_app():
         except ValueError as value_error:
             return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
 
-    @app.route('/report/translate', methods=['POST'])
+    @flask_app.route('/report/translate', methods=['POST'])
     def report_json_receiver():
         """
         Receiver for translating a report.
@@ -62,7 +62,7 @@ def create_app():
         except ValueError as value_error:
             return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
 
-    @app.route('/organisation/translate', methods=['POST'])
+    @flask_app.route('/organisation/translate', methods=['POST'])
     def organisation_json_receiver():
         """
         Receiver for translating an organisation.
@@ -81,7 +81,7 @@ def create_app():
         except ValueError as value_error:
             return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
 
-    @app.route('/faq/translate', methods=['POST'])
+    @flask_app.route('/faq/translate', methods=['POST'])
     def faq_json_receiver():
         """
         Receiver for translating an FAQ.
@@ -102,7 +102,7 @@ def create_app():
         except ValueError as value_error:
             return jsonify({'error': f'Invalid JSON data: {str(value_error)}'})
 
-    return app
+    return flask_app
 
 
 app = create_app()
