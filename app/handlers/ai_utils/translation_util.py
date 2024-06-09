@@ -65,7 +65,7 @@ class TranslationTool:
                 if dictionary['language'] == lang:
                     single_shift_translation[field_key] = direction
                 else:
-                    if direction != "":
+                    if direction != "" or direction != " ":
                         translation_result = self.translation_pipe(direction,
                                                                    src_lang=self.ai_languages_codes[
                                                                        dictionary['language']],
