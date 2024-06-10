@@ -104,4 +104,3 @@ class TranslationHandler:
             return {'error': f'Missing key: {str(key_error)}'}
         except ValueError as value_error:
             return {'error': f'Invalid JSON data: {str(value_error)}'}
-
