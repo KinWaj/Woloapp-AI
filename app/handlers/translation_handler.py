@@ -94,9 +94,14 @@ class TranslationHandler:
         Returns:
             dict: The JSON data with the AI text added to the specified field.
         """
-        for lang in self.translation_tool.languages:
-            lang_key = f'{field}{lang}'
-            if json_data['language'] != lang:
-                json_data[lang_key] += " " + self.translation_tool.ai_generated_text[lang]
-                print(f"Added AI text to {lang_key}: {json_data[lang_key]}")
-        return json_data
+        try:
+            for lang in self.translation_tool.languages:
+                lang_key = f'{field}{lang}'
+                if json_data['language'] != lang:
+                    json_data[lang_key] += " " + self.translation_tool.ai_generated_text[lang]
+            return json_data
+        except KeyError as key_error:
+            return {'error': f'Missing key: {str(key_error)}'}
+        except ValueError as value_error:
+            return {'error': f'Invalid JSON data: {str(value_error)}'}
+
