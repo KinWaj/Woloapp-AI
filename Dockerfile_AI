@@ -9,4 +9,4 @@ COPY ./app/ /app
 COPY ./run.py /
 
 ENTRYPOINT [ "python" ]
-CMD ["run.py"]
+CMD ["/run.py"]
