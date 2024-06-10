@@ -3,7 +3,7 @@ import warnings
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from app.handlers.translation_handler import TranslationHandler
+from handlers.translation_handler import TranslationHandler
 
 warnings.filterwarnings(
     "ignore",
@@ -107,3 +107,5 @@ def create_app():
 
 
 app = create_app()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True, port='5000')
