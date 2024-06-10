@@ -16,7 +16,7 @@ class TranslationTool:
         self.ai_generated_text = {
             'PL': "[Ten tekst jest przetłumaczony przez AI]",
             'EN': "[This text has been translated by AI]",
-            'UA': "[Цей текст був перекладений за допомогою AI]",
+            'UA': "[Цей текст був перекладений за допомогою ШІ]",
             'RU': "[Этот текст был переведён при помощи ИИ]"
         }
 
